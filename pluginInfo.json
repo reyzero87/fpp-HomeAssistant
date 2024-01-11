@@ -3,22 +3,10 @@
 	"name": "Home Assistant",
 	"author": "Rey Orozco Modified Version - Chris Pinkham (CaptainMurdoch)",
 	"description": "Integrate FPP with Home Assistant via MQTT Auto Discovery",
-	"homeURL": "https://github.com/FalconChristmas/fpp-HomeAssistant",
-	"srcURL": "https://github.com/FalconChristmas/fpp-HomeAssistant.git",
-	"bugURL": "https://github.com/FalconChristmas/fpp-HomeAssistant/issues",
+	"homeURL": "https://github.com/reyzero87/fpp-HomeAssistant",
+	"srcURL": "https://github.com/reyzero87/fpp-HomeAssistant.git",
+	"bugURL": "https://github.com/reyzero87/fpp-HomeAssistant/issues",
 	"versions": [
-        {
-            "minFPPVersion": "4.0",
-            "maxFPPVersion": "5.99",
-            "branch": "master",
-            "sha": "769f6561a57354574df522260212578d8fbb6d4d"
-        },
-        {
-            "minFPPVersion": "6.0",
-            "maxFPPVersion": "6.99",
-            "branch": "master",
-            "sha": "8acafbdb986875ab335799b8b6f72347974b35b5"
-        },
         {
             "minFPPVersion": "7.0",
             "maxFPPVersion": "0",
