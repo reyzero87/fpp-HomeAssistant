@@ -28,6 +28,8 @@ public:
         runSensorThread(false),
         lightThread(nullptr),
         runLightThread(false),
+        generalThread(nullptr),
+        runGeneralThread(false)
     {
         LogInfo(VB_PLUGIN, "Initializing Home Assistant Plugin\n");
 
@@ -363,6 +365,10 @@ public:
             runLightThread = false;
             lightThread->join();
         }
+        if (runGeneralThread) {
+            runGeneralThread = false;
+            generalThread->join();
+        }        
     }
 
 private:
@@ -383,6 +389,8 @@ private:
     std::atomic_bool  runSensorThread;
     std::thread      *lightThread;
     std::atomic_bool  runLightThread;
+    std::thread      *generalThread;
+    std::atomic_bool  runGeneralThread;
 
     /////////////////////////////////////////////////////////////////////////
     // Functions supporting discovery
