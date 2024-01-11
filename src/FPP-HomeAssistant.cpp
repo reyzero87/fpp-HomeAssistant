@@ -27,7 +27,7 @@ public:
         sensorThread(nullptr),
         runSensorThread(false),
         lightThread(nullptr),
-        runLightThread(false)
+        runLightThread(false),
     {
         LogInfo(VB_PLUGIN, "Initializing Home Assistant Plugin\n");
 
@@ -65,6 +65,94 @@ public:
                     return;
                 }
             }
+
+            // Rey - Below
+
+            LogExcess(VB_PLUGIN, "Setup General\n");
+            Json::Value emptyArray(Json::arrayValue);
+
+            std::string topic = "ha/number/volume/state";
+
+            // "SensorName"      = "volume"
+            // "Topic"           = "ha/number/volume/state"; 
+            // Any other parts to this?
+
+            std::function<void(const std::string &, const std::string &)> sf = [this](const std::string &topic, const std::string &payload) {
+
+                // This is when we get a message inquiring about this value?
+                // We're removing the item here if it is no longer in our configuration. This is not true for us since it's always there for volume.
+
+                //SensorMessageHandler(topic, payload);
+
+                std::vector<std::string> parts = split(topic, '/'); // "/ha/number/SensorName/*"
+                LogDebug(VB_PLUGIN, "Got a /number/ message: %s\n", topic.c_str());
+
+                std::string itemName = parts[3];
+                if ((parts[4] == "config") &&
+                    // This removes it from discovery in HA if it was disabled.
+                    //RemoveHomeAssistantDiscoveryConfig("number", "volume");
+                    return;
+                }
+
+                if (parts[4] != "cmd")
+                    return;
+
+                LogDebug(VB_PLUGIN, "Rey - Somehow we received a sensor command for sensor??? VOLUME\n");
+                LogExcess(VB_PLUGIN, "Rey - Payload: %s\n", payload.c_str());
+            };
+            Events::AddCallback("/ha/number/#", sf);
+
+            // SendSensorConfigs();
+            LogDebug(VB_PLUGIN, "Sending General Configs\n");
+
+            Json::Value s;
+            // Options:
+            // - device_class
+            // - unit_of_measurement
+
+            //s["device_class"] = sensor["DeviceClass"].asString();
+            //s["unit_of_measurement"] = sensor["UnitOfMeasure"].asString();
+
+            // 
+            //sensor.Name = $(this).find('.fppSensorName').html();
+            //sensor.Label = $(this).find('.fppSensorLabel').html();
+            //sensor.SensorName = $(this).find('.sensorName').val().trim();
+            //sensor.DeviceClass = $(this).find('.deviceClass').val();
+            //sensor.UnitOfMeasure = $(this).find('.unitOfMeasure').val();
+            //sensor.Enabled
+
+            item.Name = "VolumeName"
+            item.Label = "VolumeLabel"
+            item.SensorName = "VolumeSensor"    // This doesn't seem right?
+            item.DeviceClass = ""
+            item.UnitOfMeasure = ""
+            item.Enabled = true
+
+            //AddHomeAssistantDiscoveryConfig("number", "volume", s, item);
+
+            AddHomeAssistantDiscoveryConfig("number", "volume", s, item);
+
+            runGeneralThread = true;
+            generalThread = new std::thread([this]() {
+                std::string message;
+                char buf[24];
+                unsigned int slept;
+
+                while (runGeneralThread) {
+                    // Update volume with value here!
+
+                    snprintf(buf, sizeof(buf), "%.2f", 3.14);
+                    message = buf;
+                    mqtt->Publish("/ha/number/volume/state", message);
+
+                    slept = 0;
+                    while ((runGeneralThread) && (slept++ < 10)) {
+                        sleep(1);
+                    }
+                }
+            });
+
+            // Rey - Above
 
             if (config.isMember("models")) {
                 LogExcess(VB_PLUGIN, "Setup Models\n");
@@ -261,6 +349,7 @@ public:
 
                 }
             }
+
             LogDebug(VB_PLUGIN, "Home Assistant Init Complete\n");
         }
     }
@@ -279,6 +368,7 @@ public:
 private:
     Json::Value overlayModelConfig;
     Json::Value gpioConfig;
+    Json::Value generalConfig;  //Rey
 
     Json::Value lights;
     Json::Value gpios;
@@ -306,7 +396,8 @@ private:
         bool hasState = true;
 
         if ((component == "binary_sensor") ||
-            (component == "sensor")) {
+            (component == "sensor") ||
+            (component == "number")) {      // ADDED number temporarily, but shouldn't be here down the road - Rey
             hasCmd = false;
             isSensor = true;
         }
@@ -727,6 +818,18 @@ private:
         LogDebug(VB_PLUGIN, "Somehow we received a sensor command for sensor??? %s\n", sensorName.c_str());
         LogExcess(VB_PLUGIN, "Payload: %s\n", payload.c_str());
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     /////////////////////////////////////////////////////////////////////////
     // Functions supporting MQTT Switches

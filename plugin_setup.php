@@ -546,7 +546,7 @@ $(document).ready(function() {
     <fieldset>
         <div class="row tablePageHeader">
             <div class="col-md">
-                <h2>Home Assistant MQTT Discovery</h2>
+                <h2>Home Assistant MQTT Discovery - Rey</h2>
             </div>
             <div class="col-md-auto ml-lg-auto">
                 <div class="form-actions">
