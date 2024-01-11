@@ -21,7 +21,7 @@
 
 class FPPHomeAssistantReyPlugin : public FPPPlugin, public httpserver::http_resource {
 public:
-    FPPHomeAssistantPluginRey()
+    FPPHomeAssistantReyPlugin()
       : FPPPlugin("fpp-HomeAssistantRey"),
         sensorUpdateFrequency(60),
         sensorThread(nullptr),
