@@ -19,10 +19,10 @@
 #include "sensors/Sensors.h"
 #include "util/GPIOUtils.h"
 
-class FPPHomeAssistantPlugin : public FPPPlugin, public httpserver::http_resource {
+class FPPHomeAssistantReyPlugin : public FPPPlugin, public httpserver::http_resource {
 public:
-    FPPHomeAssistantPlugin()
-      : FPPPlugin("fpp-HomeAssistant"),
+    FPPHomeAssistantPluginRey()
+      : FPPPlugin("fpp-HomeAssistantRey"),
         sensorUpdateFrequency(60),
         sensorThread(nullptr),
         runSensorThread(false),
@@ -49,7 +49,7 @@ public:
             gpioConfig = emptyArray;
         }
 
-        if (LoadJsonFromFile(FPP_DIR_CONFIG("/plugin.fpp-HomeAssistant.json"), config)) {
+        if (LoadJsonFromFile(FPP_DIR_CONFIG("/plugin.fpp-HomeAssistantRey.json"), config)) {
             if (mqtt == nullptr) {
                 LogErr(VB_PLUGIN, "MQTT Is Not Configured, cannot configure Home Assistant Plugin\n");
                 WarningHolder::AddWarning("MQTT Is Not Configured, cannot configure Home Assistant Plugin");
@@ -354,7 +354,7 @@ public:
         }
     }
 
-    virtual ~FPPHomeAssistantPlugin() {
+    virtual ~FPPHomeAssistantReyPlugin() {
         if (runSensorThread) {
             runSensorThread = false;
             sensorThread->join();
@@ -470,7 +470,7 @@ private:
         config["device"]["manufacturer"] = "Falcon Player";
         // TODO(edalquist) how do I get platform/version in code?
         // config["device"]["model"] = getSetting("Platform") + "(" + getSetting("Variant") + ")";
-        config["device"]["configuration_url"] = "http://" + getSetting("HostName") + "/plugin.php?_menu=content&plugin=fpp-HomeAssistant&page=plugin_setup.php";
+        config["device"]["configuration_url"] = "http://" + getSetting("HostName") + "/plugin.php?_menu=content&plugin=fpp-HomeAssistantRey&page=plugin_setup.php";
         config["device"]["sw_version"] = getFPPVersion();
 
         std::string configStr = SaveJsonToString(config);
@@ -876,6 +876,6 @@ private:
 
 extern "C" {
     FPPPlugin *createPlugin() {
-        return new FPPHomeAssistantPlugin();
+        return new FPPHomeAssistantReyPlugin();
     }
 }

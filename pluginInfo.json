@@ -1,6 +1,6 @@
 {
-	"repoName": "fpp-HomeAssistant",
-	"name": "Home Assistant",
+	"repoName": "fpp-HomeAssistantRey",
+	"name": "Home Assistant Rey",
 	"author": "Rey Orozco Modified Version - Chris Pinkham (CaptainMurdoch)",
 	"description": "Integrate FPP with Home Assistant via MQTT Auto Discovery",
 	"homeURL": "https://github.com/reyzero87/fpp-HomeAssistant",

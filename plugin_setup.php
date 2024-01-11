@@ -350,18 +350,18 @@ function SaveHAConfig() {
     config['gpios'] = pins;
 
     var configStr = JSON.stringify(config, null, 2);
-    $.post('/api/configfile/plugin.fpp-HomeAssistant.json', configStr).done(function(data) {
+    $.post('/api/configfile/plugin.fpp-HomeAssistantRey.json', configStr).done(function(data) {
         $.jGrowl('Home Assistant Config Saved');
         SetRestartFlag(2);
         CheckRestartRebootFlags();
     }).fail(function() {
-        alert('Error, could not save plugin.fpp-HomeAssistant.json config file.');
+        alert('Error, could not save plugin.fpp-HomeAssistantRey.json config file.');
     });
 }
 
 function LoadConfig() {
     $.ajax({
-        url: '/api/configfile/plugin.fpp-HomeAssistant.json',
+        url: '/api/configfile/plugin.fpp-HomeAssistantRey.json',
         async: false,
         success: function(data) {
             config = data;
